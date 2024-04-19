@@ -4,3 +4,4 @@
 target/
 allure-results/
 jenkins/
+.git/
