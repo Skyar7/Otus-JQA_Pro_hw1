@@ -1,6 +1,7 @@
 package pageobject.pages;
 
 import annotations.UrlPrefix;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +19,7 @@ public abstract class AbsBasePage<T extends AbsBasePage<T>> extends AbsBaseUtils
     super(driver);
   }
 
+  @Step("Открытие страницы")
   public T openPage() {
     driver.get(BASE_URL + getUrlPrefix());
     return (T) this;

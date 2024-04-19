@@ -1,5 +1,6 @@
 package pageobject.pages;
 
+import io.qameta.allure.Step;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -22,6 +23,7 @@ public class MainPage extends AbsBasePage<MainPage> {
     super(driver);
   }
 
+  @Step("Фильтрация и открытие курса по названию")
   public void filterAndOpenCourseByName(String requiredCourseName) {
     String templCourseNameLocator = "//h5[contains(text(),'%s')]";
 

@@ -1,5 +1,6 @@
 package pageobject.pages;
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,6 +14,7 @@ public class AnyCourseCardPage extends AbsBasePage<AnyCourseCardPage> {
     super(driver);
   }
 
+  @Step("Проверка названия и описания курса")
   public void checkCourseNameAndDescriptionData() {
     String name = "";
 
