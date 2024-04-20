@@ -8,7 +8,7 @@ branch: ${REFSPEC}
 
             config = readYaml text: env.YAML_CONFIG ?: null;
 
-            if(config != null) {
+            if (config != null) {
                 for (param in config.entrySet()) {
                     env."${param.getKey()}" = param.getValue()
                 }
