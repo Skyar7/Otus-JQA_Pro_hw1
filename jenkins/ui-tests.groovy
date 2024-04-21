@@ -1,4 +1,4 @@
-timeout(60) {
+timeout(15) {
     node("maven") {
         wrap([$class: 'BuildUser']) {
             currentBuild.description = """
@@ -19,15 +19,22 @@ branch: ${REFSPEC}
             checkout scm;
         }
         stage("Create configuration") {
-            sh "echo BROWSER_NAME=${env.getProperty('BROWSER_NAME')} > ./.env"
-            sh "echo BROWSER_VERSION=${env.getProperty('BROWSER_VERSION')} >> ./.env"
-            sh "echo BASE_URL=${env.getProperty('BASE_URL')} >> ./.env"
-            sh "echo REMOTE_URL=${env.getProperty('REMOTE_URL')} >> ./.env"
-            sh "echo DRIVER_TYPE=${env.getProperty('DRIVER_TYPE')} >> ./.env"
+            sh """
+                echo BROWSER_NAME=${env.BROWSER_NAME} > ./.env
+                echo BROWSER_VERSION=${env.BROWSER_VERSION} >> ./.env
+                echo BASE_URL=${env.BASE_URL} >> ./.env
+                echo REMOTE_URL=${env.REMOTE_URL} >> ./.env
+                echo DRIVER_TYPE=${env.DRIVER_TYPE} >> ./.env
+            """
         }
         stage("Run UI tests") {
-            sh "mkdir ./reports"
-            sh "docker run --rm --env-file -v ./reports:root/ui_tests_allure-results ./.env -t ui_tests:${env.getProperty('TEST_VERSION')}"
+            sh """
+                #!/bin/sh
+                export PATH=$PATH:/usr/bin:/usr/local/bin
+                mkdir ./reports
+                whoami
+                sudo docker run --rm --network=host --env-file ./.env -v ./reports:/root/ui_tests_allure-results -t  localhost:5005/ui_tests:${env.getProperty('TEST_VERSION')}
+    """
         }
         stage("Publish allure results") {
             REPORT_DISABLE = Boolean.parseBoolean(env.getProperty('REPORT_DISABLE')) ?: false
